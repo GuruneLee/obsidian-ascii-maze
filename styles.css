@@ -1,8 +1,17 @@
-/*
+/* 뷰 컨테이너 스타일 */
+.roguelike-container {
+	padding: 10px;
+	background-color: #000; /* 검은색 배경 */
+	color: #0f0; /* 녹색 텍스트 (고전적인 ASCII 느낌) */
+	overflow: auto; /* 맵이 커질 경우 스크롤 */
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
-*/
+/* 맵 출력 영역 스타일 */
+.roguelike-map {
+	font-family: 'Consolas', 'Courier New', monospace; /* 고정폭 글꼴 사용 필수 */
+	font-size: 16px;
+	line-height: 1; /* 줄 간격을 1로 하여 수직 정렬 유지 */
+	white-space: pre;
+	margin: 0;
+	padding: 0;
+}
