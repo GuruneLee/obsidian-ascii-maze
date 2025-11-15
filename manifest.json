@@ -1,11 +1,11 @@
 {
-	"id": "obsidian-ascii-trex",
-	"name": "T-Rex Game as ASCII",
+	"id": "obsidian-ascii-maze",
+	"name": "Maze Game as ASCII",
 	"version": "0.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "Demonstrates some of the capabilities of the Obsidian API.",
 	"author": "gurunelee",
-	"authorUrl": "https://github.com/GuruneLee/obsidian-ascii-trex",
+	"authorUrl": "https://github.com/GuruneLee/obsidian-ascii-maze",
 	"fundingUrl": "",
 	"isDesktopOnly": true
 }

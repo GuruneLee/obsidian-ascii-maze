@@ -1,44 +1,44 @@
 // src/main.ts
 
-import { Plugin } from 'obsidian';
-import { RoguelikeView, VIEW_TYPE_ROGUE } from 'src/RoguelikeView';
+import {Plugin} from 'obsidian';
+import {GameView, VIEW_TYPE_MAZE} from 'src/GameView';
 
-export default class RoguelikePlugin extends Plugin {
+export default class AsciiMazePlugin extends Plugin {
 
 	async onload() {
 		this.registerView(
-			VIEW_TYPE_ROGUE,
-			(leaf) => new RoguelikeView(leaf)
+			VIEW_TYPE_MAZE,
+			(leaf) => new GameView(leaf)
 		);
 
 		this.addCommand({
-			id: 'open-roguelike-game',
-			name: 'Open Roguelike Game Dungeon',
+			id: 'open-maze-game',
+			name: 'Open Maze Game Dungeon',
 			callback: () => {
 				this.activateView();
 			}
 		});
 
-		this.addRibbonIcon('dice', 'Start Roguelike Game', () => {
+		this.addRibbonIcon('dice', 'Start Maze Game', () => {
 			this.activateView();
 		});
 	}
 
 	onunload() {
-		console.log('로그라이크 플러그인 언로드.');
+		console.log('ASCII-MAZE 플러그인 언로드.');
 	}
 
 	// Custom View 활성화 함수
 	async activateView() {
-		this.app.workspace.detachLeavesOfType(VIEW_TYPE_ROGUE); // 기존 뷰 닫기 (선택적)
+		this.app.workspace.detachLeavesOfType(VIEW_TYPE_MAZE); // 기존 뷰 닫기 (선택적)
 
 		await this.app.workspace.getRightLeaf(false)?.setViewState({
-			type: VIEW_TYPE_ROGUE,
+			type: VIEW_TYPE_MAZE,
 			active: true,
 		});
 
 		this.app.workspace.revealLeaf(
-			this.app.workspace.getLeavesOfType(VIEW_TYPE_ROGUE)[0]
+			this.app.workspace.getLeavesOfType(VIEW_TYPE_MAZE)[0]
 		);
 	}
 }
