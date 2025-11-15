@@ -51,4 +51,34 @@ export class GameMazeField {
 		return this.maze.isInsideWall(coordinate)
 			&& !this.maze.isWall(coordinate)
 	}
+
+	getMazeRenderOutput(): string {
+		let output = '';
+
+		for (let x = 0; x < this.maze.wallHeight; x++) {
+			let row = '';
+			for (let y = 0; y < this.maze.wallWidth; y++) {
+				let currentLocation = {coordX: x, coordY: y};
+				try {
+					if (this.isPlayerHere(currentLocation)) {
+						row += this.player.getCharacter();
+					} else {
+						if (this.isStartLocation(currentLocation)) {
+							row += this.maze.getStartObject();
+						} else if (this.isFinishLocation(currentLocation)) {
+							row += this.maze.getFinishObject();
+						} else {
+							row += this.maze.getObject(currentLocation);
+						}
+					}
+				} catch (e) {
+					console.error(e)
+					row += '/'
+				}
+			}
+			output += row + '\n';
+		}
+
+		return output
+	}
 }

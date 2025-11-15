@@ -27,4 +27,12 @@ export class Maze {
 		return 1 <= location.coordX && location.coordX <= this.wallHeight - 2
 			&& 1 <= location.coordY && location.coordY <= this.wallWidth - 2
 	}
+
+	getStartObject(): string {
+		return "S";
+	}
+
+	getFinishObject(): string {
+		return "F";
+	}
 }

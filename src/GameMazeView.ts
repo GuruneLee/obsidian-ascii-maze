@@ -70,23 +70,8 @@ export class GameView extends ItemView {
 	renderMap() {
 		let output = '';
 
-		for (let x = 0; x < this.mazeField.maze.wallHeight; x++) {
-			let row = '';
-			for (let y = 0; y < this.mazeField.maze.wallWidth; y++) {
-				let currentLocation = {coordX: x, coordY: y};
-				try {
-					if (this.mazeField.isPlayerHere(currentLocation)) {
-						row += this.mazeField.player.getCharacter();
-					} else {
-						row += this.mazeField.maze.getObject(currentLocation);
-					}
-				} catch (e) {
-					console.error(e)
-					row += '/'
-				}
-			}
-			output += row + '\n';
-		}
+		output += this.informationField.getInformationRenderOutput()
+		output += this.mazeField.getMazeRenderOutput()
 
 		this.mazeContainer.innerText = output;
 	}
