@@ -2,14 +2,17 @@
 import {Player} from "./Player";
 import {Coordinate} from "./Coordinate";
 import {Maze} from "./Maze";
+import {PlayerBehaviorResult} from "./PlayerBehaviorResult";
 
 export class GameMazeField {
 	maze: Maze;
 	player: Player
+	playerMoveCount: number
 
 	initMap(wallHeight: number, wallWidth: number) {
 		this.maze = this.generateMaze(wallHeight, wallWidth);
 		this.player = new Player(this.maze.startCoord)
+		this.playerMoveCount = 0
 	}
 
 	private generateMaze(wallHeight: number, wallWidth: number): Maze {
@@ -29,7 +32,8 @@ export class GameMazeField {
 		);
 	}
 
-	movePlayer(dx: number, dy: number): boolean {
+	movePlayer(dx: number, dy: number): PlayerBehaviorResult {
+		this.playerMoveCount += 1
 		const newLocation = {
 			coordX: this.player.position.posX + dx,
 			coordY: this.player.position.posY + dy,
@@ -38,13 +42,30 @@ export class GameMazeField {
 		// 맵 경계 및 벽(#) 충돌 검사
 		if (this.isValidLocationForPlayer(newLocation)) {
 			this.player.position.updatePosition(newLocation)
-			return true; // 이동 성공
+			return PlayerBehaviorResult.success(
+				'move', this.playerMoveCount == 1
+			)
 		}
-		return false; // 이동 실패 (벽 또는 경계)
+
+		return PlayerBehaviorResult.fail(
+			'move', '어딘가 걸렸나봅니다'
+		)
 	}
 
 	isPlayerHere(location: Coordinate): boolean {
 		return location.coordX === this.player.position.posX && location.coordY === this.player.position.posY
+	}
+
+	isPlayerFinished(): boolean {
+		return this.isFinishLocation({coordX: this.player.position.posX, coordY: this.player.position.posY})
+	}
+
+	isStartLocation(location: Coordinate): boolean {
+		return location.coordX === this.maze.startCoord.coordX && location.coordY === this.maze.startCoord.coordY
+	}
+
+	isFinishLocation(location: Coordinate): boolean {
+		return location.coordX === this.maze.finishCoord.coordX && location.coordY === this.maze.finishCoord.coordY
 	}
 
 	isValidLocationForPlayer(coordinate: Coordinate): boolean {

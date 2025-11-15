@@ -1,14 +1,14 @@
 // src/main.ts
 
 import {Plugin} from 'obsidian';
-import {GameView, VIEW_TYPE_MAZE} from 'src/GameView';
+import {GameMazeView, VIEW_TYPE_MAZE} from 'src/GameMazeView';
 
 export default class AsciiMazePlugin extends Plugin {
 
 	async onload() {
 		this.registerView(
 			VIEW_TYPE_MAZE,
-			(leaf) => new GameView(leaf)
+			(leaf) => new GameMazeView(leaf)
 		);
 
 		this.addCommand({

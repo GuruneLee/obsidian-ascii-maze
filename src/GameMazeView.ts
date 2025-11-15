@@ -1,15 +1,37 @@
 import {ItemView, WorkspaceLeaf} from 'obsidian';
 import {GameMazeField} from 'src/GameMazeField';
+import {GameInformationField} from "./GameInformationField";
+import {PlayerBehaviorResult} from "./PlayerBehaviorResult";
 
 export const VIEW_TYPE_MAZE = "maze-view";
 
-export class GameView extends ItemView {
+export class GameMazeView extends ItemView {
+	informationField: GameInformationField;
 	mazeField: GameMazeField;
 	mazeContainer: HTMLElement;
+	rendering = false
+	isFinished = false
 
 	constructor(leaf: WorkspaceLeaf) {
 		super(leaf);
+		this.informationField = new GameInformationField();
 		this.mazeField = new GameMazeField();
+	}
+
+	async onload() {
+		this.registerInterval(
+			window.setInterval(() => {
+				if (this.rendering) this.renderMap()
+			}, 10)
+		)
+
+		this.registerInterval(
+			window.setInterval(() => {
+				if (this.informationField.isTimerRunning) {
+					this.informationField.timerField.endTime = new Date()
+				}
+			}, 10)
+		)
 	}
 
 	getViewType(): string {
@@ -32,8 +54,9 @@ export class GameView extends ItemView {
 		this.registerDomEvent(document, 'keydown', this.handleKeyDown.bind(this));
 
 		// game view 초기화
+		this.informationField.initInformation()
 		this.mazeField.initMap(7, 10)
-		this.renderMap();
+		this.rendering = true
 	}
 
 	handleKeyDown(evt: KeyboardEvent) {
@@ -63,8 +86,8 @@ export class GameView extends ItemView {
 
 		evt.preventDefault();
 
-		this.mazeField.movePlayer(dx, dy);
-		this.renderMap();
+		const result = this.mazeField.movePlayer(dx, dy);
+		this.handlePlayerMove(result)
 	}
 
 	renderMap() {
@@ -74,5 +97,15 @@ export class GameView extends ItemView {
 		output += this.mazeField.getMazeRenderOutput()
 
 		this.mazeContainer.innerText = output;
+	}
+
+	private handlePlayerMove(result: PlayerBehaviorResult) {
+		if (result.action == 'move' && result.isFirstSuccessfulAction) {
+			this.informationField.startTimer(new Date())
+		}
+
+		if (this.mazeField.isPlayerFinished()) {
+			this.informationField.stopTimer()
+		}
 	}
 }
