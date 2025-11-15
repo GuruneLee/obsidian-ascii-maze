@@ -1,4 +1,4 @@
-import {TimerModule} from "./TimerModule";
+import {TimerModule} from "src/modules/TimerModule";
 
 export class GameInformationField {
 	stage: number

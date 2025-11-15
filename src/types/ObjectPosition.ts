@@ -1,4 +1,4 @@
-import {Coordinate} from "./Coordinate";
+import {Coordinate} from 'src/types/Coordinate';
 
 export class ObjectPosition {
 	posX: number;

@@ -1,6 +1,5 @@
-import {ObjectPosition} from "./ObjectPosition";
-
-import {Coordinate} from "./Coordinate";
+import {ObjectPosition} from 'src/types/ObjectPosition';
+import {Coordinate} from 'src/types/Coordinate';
 
 export class Player {
 	position: ObjectPosition

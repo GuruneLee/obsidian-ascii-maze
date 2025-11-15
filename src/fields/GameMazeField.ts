@@ -1,8 +1,8 @@
 // src/game/Game.ts
-import {Player} from "./Player";
-import {Coordinate} from "./Coordinate";
-import {Maze} from "./Maze";
-import {PlayerBehaviorResult} from "./PlayerBehaviorResult";
+import {Player} from 'src/entities/Player';
+import {Coordinate} from 'src/types/Coordinate';
+import {Maze} from 'src/entities/Maze';
+import {PlayerBehaviorResult} from 'src/types/PlayerBehaviorResult';
 
 export class GameMazeField {
 	maze: Maze;

@@ -1,7 +1,7 @@
 // src/main.ts
 
 import {Plugin} from 'obsidian';
-import {GameMazeView, VIEW_TYPE_MAZE} from 'src/GameMazeView';
+import {GameMazeView, VIEW_TYPE_MAZE} from 'src/views/GameMazeView';
 
 export default class AsciiMazePlugin extends Plugin {
 

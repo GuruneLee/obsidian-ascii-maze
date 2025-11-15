@@ -1,7 +1,7 @@
 import {ItemView, WorkspaceLeaf} from 'obsidian';
-import {GameMazeField} from 'src/GameMazeField';
-import {GameInformationField} from "./GameInformationField";
-import {PlayerBehaviorResult} from "./PlayerBehaviorResult";
+import {GameInformationField} from 'src/fields/GameInformationField';
+import {PlayerBehaviorResult} from 'src/types/PlayerBehaviorResult';
+import {GameMazeField} from "src/fields/GameMazeField";
 
 export const VIEW_TYPE_MAZE = "maze-view";
 
