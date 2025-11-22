@@ -1,0 +1,44 @@
+# .github/release.yml
+# GitHub 자동 릴리스 노트 설정
+
+changelog:
+    exclude:
+        labels:
+            - ignore-for-release
+            - duplicate
+            - invalid
+        authors:
+            - dependabot[bot]
+
+    categories:
+        - title: 🚨 Breaking Changes
+          labels:
+              - breaking-change
+              - major
+
+        - title: ✨ New Features
+          labels:
+              - enhancement
+              - feature
+              - minor
+
+        - title: 🐛 Bug Fixes
+          labels:
+              - bug
+              - fix
+              - patch
+
+        - title: 📚 Documentation
+          labels:
+              - documentation
+              - docs
+
+        - title: 🔧 Maintenance
+          labels:
+              - chore
+              - refactor
+              - dependencies
+
+        - title: 📦 Other Changes
+          labels:
+              - "*"

@@ -31,7 +31,7 @@ jobs:
         # [TODO: 여기에 'npm test' 명령을 추가하여 테스트를 실행해야 합니다.]
 
     # ----------------------------------------------------
-    # 2. Release Job
+    # 2. Release Job (Manual execution only)
     # ----------------------------------------------------
     release:
         # 'ci_build' 작업이 성공했을 때만 실행합니다.
@@ -48,6 +48,9 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
+              with:
+                  # 전체 Git 히스토리 가져오기 (자동 릴리스 노트 생성을 위해 필요)
+                  fetch-depth: 0
 
             - name: Use Node.js 20.x for Release
               uses: actions/setup-node@v4
@@ -64,11 +67,23 @@ jobs:
               id: get_version
               run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
 
+            # 태그 존재 여부 확인 (버전이 변경되지 않았으면 실패)
+            - name: Check if version tag already exists
+              run: |
+                  git fetch --tags
+                  if git rev-parse "v${{ env.PACKAGE_VERSION }}" >/dev/null 2>&1; then
+                    echo "❌ Error: Tag v${{ env.PACKAGE_VERSION }} already exists!"
+                    echo "Please update the version in package.json before creating a release."
+                    exit 1
+                  else
+                    echo "✅ Version v${{ env.PACKAGE_VERSION }} is new. Proceeding with release..."
+                  fi
+
             # 최종 빌드 파일 생성 (main.js, styles.css 등)
             - name: Build plugin
               run: npm run build
 
-            # 릴리스 생성 및 자산 첨부 (추출된 버전 사용)
+            # 릴리스 생성 및 자산 첨부 (자동 릴리스 노트 생성 포함)
             - name: Create Release and Upload Assets
               uses: softprops/action-gh-release@v1
               env:
@@ -79,6 +94,9 @@ jobs:
                   name: Release v${{ env.PACKAGE_VERSION }}
                   draft: false
                   prerelease: false
+
+                  # 🆕 자동 릴리스 노트 생성 활성화
+                  generate_release_notes: true
 
                   # main.js, manifest.json, styles.css 파일을 자산으로 첨부
                   files: |
