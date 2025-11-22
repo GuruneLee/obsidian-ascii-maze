@@ -2,28 +2,28 @@ import {TimerModule} from "src/modules/TimerModule";
 
 export class GameInformationField {
 	stage: number
-	timerField: TimerModule
+	timerModule: TimerModule
 	isTimerRunning: boolean = false
 
 	initInformation() {
 		this.stage = 1
-		this.timerField = new TimerModule()
+		this.timerModule = new TimerModule()
 	}
 
-	startTimer(now: Date) {
-		this.timerField.init(now)
+	startRound(now: Date) {
+		this.timerModule.init(now)
 		this.isTimerRunning = true
 	}
 
-	stopTimer() {
+	finishRound() {
 		this.isTimerRunning = false
 	}
 
 	getFieldString(): string {
 		if (this.isTimerRunning) {
-			return `현재 소모된 시간: ${this.timerField.getDuration()}`
+			return `현재 소모된 시간: ${this.timerModule.getDuration()}`
 		} else {
-			return `기록: ${this.timerField.getDuration()}`
+			return `기록: ${this.timerModule.getDuration()}`
 		}
 	}
 
