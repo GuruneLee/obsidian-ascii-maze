@@ -2,20 +2,25 @@ import {ItemView, WorkspaceLeaf} from 'obsidian';
 import {GameInformationField} from 'src/fields/GameInformationField';
 import {PlayerBehaviorResult} from 'src/types/PlayerBehaviorResult';
 import {GameMazeField} from "src/fields/GameMazeField";
+import {GameMazeRecordField} from "src/fields/GameMazeRecordField";
 
 export const VIEW_TYPE_MAZE = "maze-view";
 
 export class GameMazeView extends ItemView {
 	informationField: GameInformationField;
 	mazeField: GameMazeField;
+	recordField: GameMazeRecordField;
+
 	mazeContainer: HTMLElement;
 	rendering = false
-	isFinished = false
+
+	gameRoundNumber: number;
 
 	constructor(leaf: WorkspaceLeaf) {
 		super(leaf);
 		this.informationField = new GameInformationField();
 		this.mazeField = new GameMazeField();
+		this.recordField = new GameMazeRecordField();
 	}
 
 	async onload() {
@@ -28,7 +33,7 @@ export class GameMazeView extends ItemView {
 		this.registerInterval(
 			window.setInterval(() => {
 				if (this.informationField.isTimerRunning) {
-					this.informationField.timerField.endTime = new Date()
+					this.informationField.timerModule.endTime = new Date()
 				}
 			}, 10)
 		)
@@ -56,6 +61,7 @@ export class GameMazeView extends ItemView {
 		// game view 초기화
 		this.informationField.initInformation()
 		this.mazeField.initMap(7, 10)
+		this.gameRoundNumber = 1
 		this.rendering = true
 	}
 
@@ -95,17 +101,23 @@ export class GameMazeView extends ItemView {
 
 		output += this.informationField.getInformationRenderOutput()
 		output += this.mazeField.getMazeRenderOutput()
+		output += this.recordField.render()
 
 		this.mazeContainer.innerText = output;
 	}
 
 	private handlePlayerMove(result: PlayerBehaviorResult) {
 		if (result.action == 'move' && result.isFirstSuccessfulAction) {
-			this.informationField.startTimer(new Date())
+			this.informationField.startRound(new Date())
 		}
 
 		if (this.mazeField.isPlayerFinished()) {
-			this.informationField.stopTimer()
+			this.informationField.finishRound()
+			this.recordField.finishRound(
+				this.gameRoundNumber,
+				this.informationField.getTimeInformation().startTime,
+				this.informationField.getTimeInformation().endTime
+			)
 		}
 	}
 }

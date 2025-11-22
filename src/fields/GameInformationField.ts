@@ -27,6 +27,13 @@ export class GameInformationField {
 		}
 	}
 
+	getTimeInformation(): { startTime: Date, endTime: Date } {
+		return {
+			startTime: this.timerModule.getStartTime(),
+			endTime: this.timerModule.getEndTime(),
+		}
+	}
+
 	getInformationRenderOutput(): string {
 		let output = '';
 
